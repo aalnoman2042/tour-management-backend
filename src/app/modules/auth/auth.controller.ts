@@ -1,0 +1,28 @@
+import { NextFunction, Request, Response } from "express"
+// import { catchAsync } from "../../utils/catchAsync"
+import { sendResponse } from "../../utils/sendResponse"
+import httpStatus from "http-status-codes"
+
+import { AuthServices } from "./auth.service"
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const credentialLogin = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const loginInfo = await AuthServices.credentialLogin(req.body);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Login successful",
+      data: loginInfo,
+    });
+  } catch (error) {
+    // console.error("Login Error:", error);
+    next(error);
+  }
+};
+
+
+
+export const AuthController = {
+    credentialLogin
+}

@@ -4,6 +4,9 @@ import httpStatus from "http-status-codes"
 import { userServices } from "./user.service";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
+import { verifyToken } from "../../utils/jwt";
+import { envVar } from "../../config/env";
+import { JwtPayload } from "jsonwebtoken";
 
 
 // creating a user 
@@ -15,6 +18,26 @@ sendResponse(res, {
   success: true,
   statusCode: httpStatus.CREATED ,
   message : "user created successfuylly",
+  data : user,
+})
+
+})
+// update a user
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const updateUSer = catchAsync(async (req:Request , res: Response, next: NextFunction)=>{
+
+
+const userId = req.params.id 
+const token = req.headers.authorization
+const verifiedToken = verifyToken(token as string, envVar.JWT_ACCESS_SECRET) as JwtPayload
+const payload = req.body
+
+const user = await userServices.updateUser(userId, payload, verifiedToken)
+// console.log("user updating");
+sendResponse(res, {
+  success: true,
+  statusCode: httpStatus.CREATED ,
+  message : "user updated successfuylly",
   data : user,
 })
 
@@ -43,5 +66,6 @@ const getAllUsers = async(req: Request, res: Response, next: NextFunction) =>{
 
 export const UserControllers = {
     createUSer,
-    getAllUsers
+    getAllUsers,
+    updateUSer
 }

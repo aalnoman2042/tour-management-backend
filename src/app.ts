@@ -25,8 +25,8 @@ app.get("/", (req: Request, res: Response)=>{
 })
 
 // global error handleer
-app.use(globaslErrorHandler)
 
 app.use(notFound)
+app.use(globaslErrorHandler)
 
 export default app
