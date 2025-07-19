@@ -16,7 +16,8 @@ try {
     if(!authRoles.includes(verifedToken.role)){
         throw new AppError(403, "you are not permited to access this")
     }
-
+    
+        req.user = verifedToken
     
         next()
 

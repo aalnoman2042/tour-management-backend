@@ -4,9 +4,6 @@ import httpStatus from "http-status-codes"
 import { userServices } from "./user.service";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import { verifyToken } from "../../utils/jwt";
-import { envVar } from "../../config/env";
-import { JwtPayload } from "jsonwebtoken";
 
 
 // creating a user 
@@ -28,8 +25,9 @@ const updateUSer = catchAsync(async (req:Request , res: Response, next: NextFunc
 
 
 const userId = req.params.id 
-const token = req.headers.authorization
-const verifiedToken = verifyToken(token as string, envVar.JWT_ACCESS_SECRET) as JwtPayload
+// const token = req.headers.authorization
+ // const verifiedToken = verifyToken(token as string, envVar.JWT_ACCESS_SECRET) as JwtPayload
+const  verifiedToken = req.user
 const payload = req.body
 
 const user = await userServices.updateUser(userId, payload, verifiedToken)
